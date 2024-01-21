@@ -10,7 +10,7 @@ class Runner( BoxLayout):
     def __init__(self, total, steptime, **kwargs):
         super().__init__(**kwargs)
         self.total = total
-        self.btnnext = 'Продовжити'
+        self.btnnext = 'Присдіання'
         self.animation = (Animation(pos_hint={"top": 0.1}, duration=steptime/2)+ Animation(pos_hint={"top": 1.0}, duration=steptime/2))
 
         self.animation.repeat = True
@@ -28,7 +28,7 @@ class Runner( BoxLayout):
 
     def next(self, widget, step):
         if step == 1.0:
-            self.value = 1
+            self.value += 1
             if self.value >= self.total:
                 self.finished = True
                 self.animation.repeat = False
