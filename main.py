@@ -1,4 +1,4 @@
-from kivy.app import App
+from kivy.app import*
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -6,17 +6,18 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.core.window import Window
 from kivy.uix.scrollview import ScrollView
+from kivy.lang import Builder
+from kivy.core.window import Window
 from instructions import txt_instruction, txt_test1, txt_test2, txt_test3, txt_sits
 from ruffier import test
 from seconds import Seconds
 from sits import Sits
 from runner import Runner
-
 age = 7
 name = ""
 p1, p2, p3 = 0, 0, 0
 
-
+letters = "qweartyuiopsdfghjklzxcvbnm "
 def check_int(str_num):
     try:
         return int(str_num)
@@ -35,6 +36,7 @@ class InstrScr(Screen):
         self.btn = Button(text="Почати",
                           size_hint=(0.3, 0.2),
                           pos_hint={'center_x': 0.5})
+        self.btn.background_color = (1, 0, 3, 1)
         self.btn.on_press = self.next
         line1 = BoxLayout(size_hint=(0.8, None), height='30sp')
         line2 = BoxLayout(size_hint=(0.8, None), height='30sp')
@@ -48,6 +50,7 @@ class InstrScr(Screen):
         outer.add_widget(line2)
         outer.add_widget(self.btn)
         self.add_widget(outer)
+        Window.clearcolor = (1, 0, 0, 0.5)
 
     def next(self):
         global name, age
@@ -55,11 +58,16 @@ class InstrScr(Screen):
         if len(name) == 0:
             self.in_name.background_color = 'blue'
             return
+        for sym in name:
+            if sym.lower() not in letters:
+                self.in_name.background_color = 'blue'
+                return
+
         age = check_int(self.in_age.text)
         if age < 7:
             age = 7
             self.in_age.background_color = 'blue'
-            self.in_age.text = '0'
+            self.in_age.text = '7'
             return
         self.manager.current = 'pulse1'
 
@@ -85,7 +93,7 @@ class PulseScr(Screen):
         self.btn = Button(text='Почати',
                           size_hint=(0.5, 0.9),
                           pos_hint={'center_x': 0.5})
-
+        self.btn.background_color = (1, 2, 1, 1)
         self.btn.on_press = self.next
 
         outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
@@ -110,7 +118,11 @@ class PulseScr(Screen):
             self.lbl_sec.start()
         else:
             p1 = int(self.in_result.text)
-            self.manager.current = 'sits'
+            if p1 <= 0:
+                self.in_result.background_color = "blue"
+                self.in_result.text = "0"
+            else:
+                self.manager.current = 'sits'
 
 
 class CheckSits(Screen):
@@ -134,7 +146,7 @@ class CheckSits(Screen):
         self.btn = Button(text="Почати",
                           size_hint=(0.3, 0.2),
                           pos_hint={'center_x': 0.5})
-
+        self.btn.background_color = (1, 1, .5, 1)
         self.btn.on_press = self.next
 
         outer = BoxLayout(orientation='vertical', padding=8, spacing=8)
@@ -180,7 +192,7 @@ class PulseScr2(Screen):
         self.btn = Button(text="Почати",
                           size_hint=(0.3, 0.2),
                           pos_hint={"center_x": 0.5})
-
+        self.btn.background_color = (.5, 2, 1, 1)
         self.btn.on_press = self.next
 
         line1.add_widget(lbl1)
